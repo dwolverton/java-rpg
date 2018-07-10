@@ -41,6 +41,12 @@ public class Map {
 		}
 	}
 	
+	public void setTile(int x, int y, Tile tile) {
+		if (!isOutOfBounds(x, y)) {
+			tiles[width * y + x] = tile;
+		}
+	}
+	
 	private boolean isOutOfBounds(int x, int y) {
 		return x < 0 || y < 0 || x >= width || y >= height;
 	}

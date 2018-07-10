@@ -4,10 +4,10 @@ import co.grandcircus.javarpg.ui.Sprite;
 
 public class TileBase implements Tile {
 	
-	private String name;
-	private boolean canEnter;
-	private Sprite baseSprite;
-	private Sprite addonSprite;
+	protected String name;
+	protected boolean canEnter;
+	protected Sprite baseSprite;
+	protected Sprite addonSprite;
 
 	protected TileBase(String name, boolean canEnter, Sprite baseSprite) {
 		this.name = name;

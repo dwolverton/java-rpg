@@ -1,17 +1,18 @@
 package co.grandcircus.javarpg.ui;
 
 import co.grandcircus.javarpg.Direction;
+import co.grandcircus.javarpg.Game;
 import co.grandcircus.javarpg.Map;
 import co.grandcircus.javarpg.events.Event;
 import co.grandcircus.javarpg.events.EventListener;
+import co.grandcircus.javarpg.events.MapChangeEvent;
 import co.grandcircus.javarpg.events.PlayerChangeEvent;
-import co.grandcircus.javarpg.events.PlayerMoveEvent;
 import co.grandcircus.javarpg.tiles.Tile;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -22,8 +23,13 @@ public class Renderer implements EventListener {
 	
     private Canvas mapCanvas = new Canvas();
     private Canvas playerCanvas = new Canvas();
+    private Game game;
     
-    public void init(Stage primaryStage) {
+    public Renderer(Game game) {
+		this.game = game;
+	}
+
+	public void init(Stage primaryStage) {
     	Group root = new Group();
         primaryStage.setScene(new Scene(root, 10 * TILE_SIZE, 10 * TILE_SIZE));
         primaryStage.show();
@@ -32,6 +38,7 @@ public class Renderer implements EventListener {
         pane.getChildren().add(mapCanvas);
         pane.getChildren().add(playerCanvas);
         root.getChildren().add(pane);
+        pane.setOnMouseClicked((MouseEvent event) -> game.start());
 
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()));
@@ -46,7 +53,8 @@ public class Renderer implements EventListener {
         
         for (int y = 0; y < map.getHeight(); y++) {
         	for (int x = 0; x < map.getWidth(); x++) {
-        		drawTile(map, x, y);
+            	Tile tile = map.getTile(x, y);
+        		drawTile(tile, x, y);
         	}
         }
     }
@@ -56,8 +64,7 @@ public class Renderer implements EventListener {
     	drawSprite(playerCanvas, PlayerSprites.forDirection(direction), x, y);
     }
     
-    private void drawTile(Map map, int x, int y) {
-    	Tile tile = map.getTile(x, y);
+    private void drawTile(Tile tile, int x, int y) {
     	drawSprite(mapCanvas, tile.getBaseSprite(), x, y);;
     	if (tile.getAddonSprite() != null) {
     		drawSprite(mapCanvas, tile.getAddonSprite(), x, y);
@@ -77,7 +84,9 @@ public class Renderer implements EventListener {
     	if (event instanceof PlayerChangeEvent) {
     		PlayerChangeEvent e = (PlayerChangeEvent) event;
     		drawPlayer(e.getX(), e.getY(), e.getDirection());
+    	} else if (event instanceof MapChangeEvent) {
+    		MapChangeEvent e = (MapChangeEvent) event;
+    		drawTile(e.getTile(), e.getX(), e.getY());
     	}
-    	
     }
 }

@@ -1,9 +1,12 @@
 package co.grandcircus.javarpg;
 
 import co.grandcircus.javarpg.events.EventListener;
+import co.grandcircus.javarpg.events.MapChangeEvent;
 import co.grandcircus.javarpg.events.PlayerMoveEvent;
 import co.grandcircus.javarpg.events.PlayerTurnEvent;
+import co.grandcircus.javarpg.tiles.FlowerTile;
 import co.grandcircus.javarpg.tiles.Tile;
+import co.grandcircus.javarpg.tiles.Tiles;
 
 public class Player {
 	
@@ -61,6 +64,17 @@ public class Player {
 	
 	public Tile lookRight() {
 		return map.getTile(x + direction.getRight().getX(), y + direction.getRight().getY());
+	}
+	
+	public void plantFlower(String color) {
+		Tile flower = FlowerTile.forColor(color);
+		map.setTile(x, y, flower);
+		eventListener.handleEvent(new MapChangeEvent(x, y, flower));
+	}
+	
+	public void pickFlower() {
+		map.setTile(x, y, Tiles.GRASS);
+		eventListener.handleEvent(new MapChangeEvent(x, y, Tiles.GRASS));
 	}
 
 	public int getX() {
