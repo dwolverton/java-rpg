@@ -7,13 +7,16 @@ public class TestGame extends Game {
 	}
 	
 	{
-		init(Maps.COAST, 1, 1);
+		init(Maps.COAST, 1, 1, Direction.EAST);
 	}
 
 	@Override
-	protected void run() throws Exception {
-		// TODO Auto-generated method stub
-		
+	protected void run(Player player, Map map) throws Exception {
+		for (int i = 0; i < 8; i++) {
+			player.moveForward();
+			player.moveForward();
+			player.turnRight();
+		}
 	}
 		
 }

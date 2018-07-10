@@ -1,4 +1,4 @@
-package co.grandcircus.javarpg;
+package co.grandcircus.javarpg.ui;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 public class Sprite {
 	
 	private static final Image MAP_TILES_IMAGE = new Image("co/grandcircus/javarpg/resources/maptiles.png");
+	private static final Image PLAYER_IMAGE = new Image("co/grandcircus/javarpg/resources/player.png");
 	
 	private Image image;
 	private int x;
@@ -15,6 +16,10 @@ public class Sprite {
 	
 	public static Sprite forMap(int x, int y) {
 		return new Sprite(MAP_TILES_IMAGE, x, y);
+	}
+	
+	public static Sprite forPlayer(int x, int y) {
+		return new Sprite(PLAYER_IMAGE, x, y);
 	}
 
 	private Sprite(Image image, int x, int y) {

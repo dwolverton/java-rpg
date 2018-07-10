@@ -1,6 +1,6 @@
 package co.grandcircus.javarpg.tiles;
 
-import co.grandcircus.javarpg.Sprite;
+import co.grandcircus.javarpg.ui.Sprite;
 
 public class WaterTile extends TileBase {
 	
