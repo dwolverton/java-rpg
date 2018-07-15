@@ -9,42 +9,46 @@ import co.grandcircus.javarpg.ui.Renderer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public abstract class Game extends Application implements EventListener {
+public class Game extends Application implements EventListener {
 	
-	protected abstract void setup();
-
-    protected abstract void run(Player player, Map map);
-    
     private EventBus eventBus = new EventBus();
     private Renderer renderer;
     private EventDelayer delayer;
     private Player player;
     
-    private Map map;
-    private int playerStartX, playerStartY;
-    private Direction playerStartDirection;
-    private boolean autoStart = false;
-    
-    protected final void setMap(Map map) {
-    	this.map = map;
-    }
-    
-    protected final void setPlayerStart(int playerX, int playerY, Direction playerDirection) {
-    	this.playerStartX = playerX;
-    	this.playerStartY = playerY;
-    	this.playerStartDirection = playerDirection;
-    }
-    
-    protected final void setAutoStart(boolean autoStart) {
-    	this.autoStart = autoStart;
-    }
-    
-    
+    private static GameRunner runner;
+    private GameConfig config = new GameConfig();
+
+	public static void launch(GameRunner runner) {
+		Game.runner = runner;
+		launch(new String[0]);
+	}
+	
+	public static void launch() {
+		// determine the main class automatically, create and instance and call launch(GameRunner)
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        String mainClassName = stackTrace[stackTrace.length - 1].getClassName();
+
+        try {
+            Class<?> mainClass = Class.forName(mainClassName, false,
+                               Thread.currentThread().getContextClassLoader());
+            if (GameRunner.class.isAssignableFrom(mainClass)) {
+                launch((GameRunner) mainClass.newInstance());
+            } else {
+                throw new RuntimeException("Error: To start a game, " + mainClass
+                        + " must implement the GameRunner interface.");
+            }
+        } catch (RuntimeException ex) {
+            throw ex;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+	}
     
     private void start() {
     	new Thread(() -> {
             try {
-                this.run(player, map);
+                runner.run(player, config.getMap());
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -53,26 +57,27 @@ public abstract class Game extends Application implements EventListener {
 
     @Override
     public final void start(Stage primaryStage) throws Exception {
-    	eventBus.register(this);
-    	renderer = new Renderer(eventBus);
-    	delayer = new EventDelayer(eventBus, 300);
-    	eventBus.register(renderer);
+    	runner.setup(config);
     	
-    	setup();
-    	if (map == null) {
+    	if (config.getMap() == null) {
     		throw new IllegalStateException("setMap() must be called in the setup method.");
     	}
-    	if (playerStartDirection == null) {
+    	if (config.getPlayerStartDirection() == null) {
     		throw new IllegalStateException("setPlayerStart() must be called in the setup method.");
     	}
     	
-    	this.player = new Player(map, delayer, playerStartX, playerStartY, playerStartDirection);
+    	eventBus.register(this);
+    	renderer = new Renderer(eventBus, config.getScale());
+    	delayer = new EventDelayer(eventBus, 300);
+    	eventBus.register(renderer);
+    	
+    	this.player = new Player(config.getMap(), delayer, config.getPlayerStartX(), config.getPlayerStartY(), config.getPlayerStartDirection());
     	
     	renderer.init(primaryStage);
-    	renderer.drawMap(map);
+    	renderer.drawMap(config.getMap());
     	renderer.placePlayer(player.getX(), player.getY(), player.getDirection());
     	
-    	if (autoStart) {
+    	if (config.isAutoStart()) {
     		eventBus.handleEvent(new StartEvent());
     	}
     }

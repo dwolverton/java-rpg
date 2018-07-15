@@ -13,24 +13,20 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Renderer implements EventListener {
 	
-	public static final int TILE_SIZE = 32;
+	public static final int BASE_TILE_SIZE = 32;
+	
+	private double tileSize = BASE_TILE_SIZE;
+	private double scale = 1;
 	
 	private Pane pane = new Pane();
     private Canvas mapCanvas = new Canvas();
@@ -41,28 +37,30 @@ public class Renderer implements EventListener {
     
     private int lastPlayerX, lastPlayerY;
     
-    public Renderer(EventListener eventListener) {
+    public Renderer(EventListener eventListener, double scale) {
 		this.eventListener = eventListener;
+		this.scale = scale;
+    	this.tileSize = BASE_TILE_SIZE * scale;
 	}
 
 	public void init(Stage primaryStage) {
     	Group root = new Group();
-        primaryStage.setScene(new Scene(root, 10 * TILE_SIZE, 10 * TILE_SIZE));
+        primaryStage.setScene(new Scene(root, 10 * tileSize, 10 * tileSize));
         primaryStage.show();
         
         pane.getChildren().add(mapCanvas);
         pane.getChildren().add(pathCanvas);
         pane.getChildren().add(playerCanvas);
         pane.getChildren().add(startLabel);
-        startLabel.setPrefSize(10 * TILE_SIZE, 8 * TILE_SIZE);
-        startLabel.setFont(Font.font(42));
+        startLabel.setPrefSize(10 * tileSize, 8 * tileSize);
+        startLabel.setFont(Font.font(42 * scale));
         startLabel.setAlignment(Pos.CENTER);
         startLabel.setTextFill(new Color(1, 1, 1, .7));
         
         root.getChildren().add(pane);
-        pane.setOnMouseClicked((MouseEvent event) -> eventListener.handleEvent(new StartEvent()));
+        startLabel.setOnMouseClicked((MouseEvent event) -> eventListener.handleEvent(new StartEvent()));
         
-        pathCanvas.getGraphicsContext2D().setLineWidth(4);
+        pathCanvas.getGraphicsContext2D().setLineWidth(4 * scale);
         pathCanvas.getGraphicsContext2D().setStroke(Color.web("#87CEFA", .7));
 
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -71,12 +69,12 @@ public class Renderer implements EventListener {
     }
 
     public void drawMap(Map map) {
-    	mapCanvas.setWidth(TILE_SIZE * map.getWidth());
-    	mapCanvas.setHeight(TILE_SIZE * map.getHeight());
-    	pathCanvas.setWidth(TILE_SIZE * map.getWidth());
-    	pathCanvas.setHeight(TILE_SIZE * map.getHeight());
-    	playerCanvas.setWidth(TILE_SIZE * map.getWidth());
-    	playerCanvas.setHeight(TILE_SIZE * map.getHeight());
+    	mapCanvas.setWidth(tileSize * map.getWidth());
+    	mapCanvas.setHeight(tileSize * map.getHeight());
+    	pathCanvas.setWidth(tileSize * map.getWidth());
+    	pathCanvas.setHeight(tileSize * map.getHeight());
+    	playerCanvas.setWidth(tileSize * map.getWidth());
+    	playerCanvas.setHeight(tileSize * map.getHeight());
         
         for (int y = 0; y < map.getHeight(); y++) {
         	for (int x = 0; x < map.getWidth(); x++) {
@@ -91,7 +89,7 @@ public class Renderer implements EventListener {
     	drawPlayer(x, y, direction);
     	lastPlayerX = x;
     	lastPlayerY = y;
-    	pathCanvas.getGraphicsContext2D().strokeOval(x * TILE_SIZE + 4, y * TILE_SIZE + 4, TILE_SIZE - 8, TILE_SIZE - 8);
+    	pathCanvas.getGraphicsContext2D().strokeOval(x * tileSize + 4, y * tileSize + 4, tileSize - 8, tileSize - 8);
     }
     
     private void drawPlayer(int x, int y, Direction direction) {
@@ -107,13 +105,13 @@ public class Renderer implements EventListener {
     }
     
     private void drawPathTo(int x, int y) {
-    	pathCanvas.getGraphicsContext2D().strokeLine((lastPlayerX + .5) * TILE_SIZE, (lastPlayerY + .5) * TILE_SIZE, (x +.5)  * TILE_SIZE, (y + .5) * TILE_SIZE);
+    	pathCanvas.getGraphicsContext2D().strokeLine((lastPlayerX + .5) * tileSize, (lastPlayerY + .5) * tileSize, (x +.5)  * tileSize, (y + .5) * tileSize);
     	lastPlayerX = x;
     	lastPlayerY = y;
     }
     
     private void drawSprite(Canvas canvas, Sprite sprite, int x, int y) {
-    	sprite.draw(canvas.getGraphicsContext2D(), x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    	sprite.draw(canvas.getGraphicsContext2D(), x * tileSize, y * tileSize, tileSize, tileSize);
     }
     
     private void clearCanvas(Canvas canvas) {

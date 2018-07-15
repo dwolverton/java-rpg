@@ -2,21 +2,30 @@ package co.grandcircus.javarpg;
 
 import java.util.Scanner;
 
-public class TestGame extends Game {
+import co.grandcircus.javarpg.Direction;
+import co.grandcircus.javarpg.Game;
+import co.grandcircus.javarpg.GameConfig;
+import co.grandcircus.javarpg.GameRunner;
+import co.grandcircus.javarpg.Map;
+import co.grandcircus.javarpg.Maps;
+import co.grandcircus.javarpg.Player;
+
+public class TestGame implements GameRunner {
 	
 	public static void main(String[] args) {
-		launch(args);
+		Game.launch();
 	}
 	
 	@Override
-	protected void setup() {
-		setMap(Maps.COAST);
-		setPlayerStart(0, 1, Direction.EAST);
-		setAutoStart(true);
+	public void setup(GameConfig config) {
+		config.setMap(Maps.COAST);
+		config.setPlayerStart(0, 1, Direction.EAST);
+		config.setAutoStart(false);
+		config.setScale(2.5);
 	}
 
 	@Override
-	protected void run(Player player, Map map) {
+	public void run(Player player, Map map) {
 //		Scanner scnr = new Scanner(System.in);
 //		
 //		System.out.println("How far?");
@@ -51,11 +60,11 @@ public class TestGame extends Game {
 //		}
 		
 		
-		for (int i = 0; i < 8; i++) {
-			player.moveForward();
-			player.moveForward();
-			player.turnRight();
-		}
+//		for (int i = 0; i < 8; i++) {
+//			player.moveForward();
+//			player.moveForward();
+//			player.turnRight();
+//		}
 //		while (player.tryMoveForward()) {
 //		}
 //		player.turnLeft();
