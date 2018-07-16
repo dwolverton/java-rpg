@@ -1,5 +1,7 @@
 package co.grandcircus.javarpg;
 
+import co.grandcircus.javarpg.events.EventListener;
+import co.grandcircus.javarpg.events.MapChangeEvent;
 import co.grandcircus.javarpg.tiles.GrassTile;
 import co.grandcircus.javarpg.tiles.OutOfBoundsTile;
 import co.grandcircus.javarpg.tiles.Tile;
@@ -9,6 +11,7 @@ public class Map {
 	Tile[] tiles;
 	private int width;
 	private int height;
+	private EventListener eventListener;
 
 	public Map(int width, int height, Tile... tiles) {
 		if (tiles.length != width * height) {
@@ -23,6 +26,10 @@ public class Map {
 				tiles[i] = GrassTile.INSTANCE;
 			}
 		}
+	}
+	
+	void setEventListener(EventListener eventListener) {
+		this.eventListener = eventListener;
 	}
 	
 	public int getWidth() {
@@ -44,6 +51,9 @@ public class Map {
 	public void setTile(int x, int y, Tile tile) {
 		if (!isOutOfBounds(x, y)) {
 			tiles[width * y + x] = tile;
+			if (eventListener != null) {
+				eventListener.handleEvent(new MapChangeEvent(x, y, tile));
+			}
 		}
 	}
 	

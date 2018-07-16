@@ -1,4 +1,4 @@
-package co.grandcircus.javarpg;
+package co.grandcircus.javarpg.challenges;
 
 import java.util.Scanner;
 
@@ -18,7 +18,7 @@ public class TestGame implements GameRunner {
 	
 	@Override
 	public void setup(GameConfig config) {
-		config.setMap(Maps.COAST);
+		config.setMap(Maps.coast());
 		config.setPlayerStart(0, 1, Direction.EAST);
 		config.setAutoStart(false);
 		config.setScale(2.5);

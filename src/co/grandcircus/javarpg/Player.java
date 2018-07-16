@@ -40,6 +40,23 @@ public class Player {
 		}
 	}
 	
+	public void moveBackward() throws MovementException {
+		if (!tryMoveBackward()) {
+			throw new MovementException("Cannot move into " + lookBack().getName());
+		}
+	}
+	
+	public boolean tryMoveBackward() {
+		if (lookBack().isCanEnter()) {
+			x -= direction.getX();
+			y -= direction.getY();
+			eventListener.handleEvent(new PlayerMoveEvent(x, y, direction));
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public void turnLeft() {
 		direction = direction.getLeft();
 		eventListener.handleEvent(new PlayerTurnEvent(x, y, direction));
@@ -58,6 +75,10 @@ public class Player {
 		return map.getTile(x + direction.getX(), y + direction.getY());
 	}
 	
+	public Tile lookBack() {
+		return map.getTile(x - direction.getX(), y - direction.getY());
+	}
+	
 	public Tile lookLeft() {
 		return map.getTile(x + direction.getLeft().getX(), y + direction.getLeft().getY());
 	}
@@ -69,12 +90,10 @@ public class Player {
 	public void plantFlower(String color) {
 		Tile flower = FlowerTile.forColor(color);
 		map.setTile(x, y, flower);
-		eventListener.handleEvent(new MapChangeEvent(x, y, flower));
 	}
 	
 	public void pickFlower() {
 		map.setTile(x, y, Tiles.GRASS);
-		eventListener.handleEvent(new MapChangeEvent(x, y, Tiles.GRASS));
 	}
 
 	public int getX() {

@@ -8,7 +8,8 @@ import static co.grandcircus.javarpg.tiles.Tiles.*;
 
 public class Maps {
 	
-	public static final Map PLAIN = new Map(10, 10,
+	public static final Map plain() {
+		return new Map(10, 10,
 			null, null, null, null, null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null,
@@ -20,8 +21,40 @@ public class Maps {
 			null, null, null, null, null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, null, null
 			);
+	}
 	
-	public static final Map SPARSE_OBSTACLES = new Map(10, 10,
+	public static final Map trailOfFlowers() {
+		return new Map(10, 10,
+			null, null, null, null, null, null, null, null, null, null,
+			null, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, null,
+			null, null, null, null, null, null, null, null, YELLOW_FLOWER, null,
+			null, null, null, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, null,
+			null, null, null, YELLOW_FLOWER, null, null, null, null, null, null,
+			null, null, null, YELLOW_FLOWER, null, RED_FLOWER, null, null, null, null,
+			null, null, null, YELLOW_FLOWER, null, YELLOW_FLOWER, null, null, null, null,
+			null, null, null, YELLOW_FLOWER, YELLOW_FLOWER, YELLOW_FLOWER, null, null, null, null,
+			null, null, null, null, null, null, null, null, null, null,
+			null, null, null, null, null, null, null, null, null, null
+			);
+	}
+	
+	public static final Map stumpsAndRocks() {
+		return new Map(10, 10,
+			null, null, null, RED_FLOWER, null, null, null, null, null, null,
+			null, null, null, null, null, STUMP, null, null, null, null,
+			ROCK, null, null, null, null, null, null, null, null, STUMP,
+			null, null, null, null, STUMP, null, null, null, null, null,
+			null, null, null, null, null, null, ROCK, null, null, null,
+			null, null, null, null, null, null, null, null, null, null,
+			null, null, null, null, null, null, null, null, null, null,
+			null, null, STUMP, null, null, null, null, null, null, null,
+			null, null, null, null, null, ROCK, null, null, STUMP, null,
+			null, ROCK, null, null, null, null, null, null, null, null
+			);
+	}
+	
+	public static final Map sparseObstacles() {
+		return new Map(10, 10,
 			null, null, BushTile.INSTANCE, null, null, null, null, null, null, null,
 			null, null, null, null, null, null, null, null, BushTile.INSTANCE, null,
 			null, RockTile.INSTANCE, null, null, null, null, null, null, null, null,
@@ -33,8 +66,10 @@ public class Maps {
 			null, null, null, null, null, null, null, null, null, null,
 			null, null, null, null, null, BushTile.INSTANCE, null, null, null, null
 			);
+	}
 	
-	public static final Map COAST = new Map(10, 10,
+	public static final Map coast() {
+		return new Map(10, 10,
 			null, STUMP, BUSH, null, null, null, BUSH, BUSH, STUMP, RED_FLOWER,
 			null, null, YELLOW_FLOWER, YELLOW_FLOWER, null, null, null, null, null, null,
 			BUSH, YELLOW_FLOWER, null, null, null, null, null, null, BUSH, BUSH,
@@ -46,5 +81,6 @@ public class Maps {
 			null, ROCK, WATER, WATER, WATER, WATER, WATER, WATER, WATER, WATER,
 			null, null, WATER, WATER, WATER, WATER, WATER, WATER, WATER, WATER
 			);
+	}
 
 }
