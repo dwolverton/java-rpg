@@ -1,7 +1,6 @@
 package co.grandcircus.javarpg;
 
 import co.grandcircus.javarpg.events.EventListener;
-import co.grandcircus.javarpg.events.MapChangeEvent;
 import co.grandcircus.javarpg.events.PlayerMoveEvent;
 import co.grandcircus.javarpg.events.PlayerTurnEvent;
 import co.grandcircus.javarpg.tiles.FlowerTile;

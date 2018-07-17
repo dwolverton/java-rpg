@@ -7,6 +7,8 @@ public class GameConfig {
     private Direction playerStartDirection;
     private boolean autoStart = false;
     private double scale = 1;
+    private int tickDelayInMillis = 300;
+    private boolean showPath = true;
     
 	public Map getMap() {
 		return map;
@@ -39,6 +41,21 @@ public class GameConfig {
 	}
 	public void setScale(double scale) {
 		this.scale = scale;
+	}
+	public int getTickDelayInMillis() {
+		return tickDelayInMillis;
+	}
+	public void setTickDelayInMillis(int tickDelayInMillis) {
+		this.tickDelayInMillis = tickDelayInMillis;
+	}
+	public void setSpeed1To10(int speed) {
+		setTickDelayInMillis(50 + (10 - speed) * 100);
+	}
+	public boolean isShowPath() {
+		return showPath;
+	}
+	public void setShowPath(boolean showPath) {
+		this.showPath = showPath;
 	}
     
     

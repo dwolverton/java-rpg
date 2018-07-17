@@ -27,6 +27,7 @@ public class Renderer implements EventListener {
 	
 	private double tileSize = BASE_TILE_SIZE;
 	private double scale = 1;
+	private boolean showPath;
 	
 	private Pane pane = new Pane();
     private Canvas mapCanvas = new Canvas();
@@ -37,10 +38,11 @@ public class Renderer implements EventListener {
     
     private int lastPlayerX, lastPlayerY;
     
-    public Renderer(EventListener eventListener, double scale) {
+    public Renderer(EventListener eventListener, double scale, boolean showPath) {
 		this.eventListener = eventListener;
 		this.scale = scale;
     	this.tileSize = BASE_TILE_SIZE * scale;
+    	this.showPath = showPath;
 	}
 
 	public void init(Stage primaryStage) {
@@ -49,8 +51,10 @@ public class Renderer implements EventListener {
         primaryStage.show();
         
         pane.getChildren().add(mapCanvas);
-        pane.getChildren().add(pathCanvas);
-        pane.getChildren().add(playerCanvas);
+        if (showPath) {
+            pane.getChildren().add(pathCanvas);
+        }
+    	pane.getChildren().add(playerCanvas);
         pane.getChildren().add(startLabel);
         startLabel.setPrefSize(10 * tileSize, 8 * tileSize);
         startLabel.setFont(Font.font(42 * scale));

@@ -67,8 +67,8 @@ public class Game extends Application implements EventListener {
     	}
     	
     	eventBus.register(this);
-    	renderer = new Renderer(eventBus, config.getScale());
-    	delayer = new EventDelayer(eventBus, 300);
+    	renderer = new Renderer(eventBus, config.getScale(), config.isShowPath());
+    	delayer = new EventDelayer(eventBus, config.getTickDelayInMillis());
     	eventBus.register(renderer);
     	
     	config.getMap().setEventListener(delayer);
