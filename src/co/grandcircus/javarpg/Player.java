@@ -14,7 +14,7 @@ public class Player {
 	private Direction direction;
 	EventListener eventListener;
 	
-	protected Player(Map map, EventListener eventListener, int x, int y, Direction direction) {
+	Player(Map map, EventListener eventListener, int x, int y, Direction direction) {
 		this.map = map;
 		this.x = x;
 		this.y = y;

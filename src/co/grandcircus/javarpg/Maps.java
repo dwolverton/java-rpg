@@ -23,6 +23,21 @@ public class Maps {
 			);
 	}
 	
+	public static final Map flowers() {
+		return new Map(10, 10,
+			null, YELLOW_FLOWER, null, RED_FLOWER, null, null, YELLOW_FLOWER, null, RED_FLOWER, null,
+			RED_FLOWER, null, YELLOW_FLOWER, null,RED_FLOWER, null, YELLOW_FLOWER, null, null, YELLOW_FLOWER,
+			YELLOW_FLOWER, null, null, RED_FLOWER, null, YELLOW_FLOWER, null, YELLOW_FLOWER, null, RED_FLOWER,
+			null, YELLOW_FLOWER, YELLOW_FLOWER, null, YELLOW_FLOWER, null, null, RED_FLOWER, YELLOW_FLOWER, null,
+			YELLOW_FLOWER, RED_FLOWER, null, RED_FLOWER, YELLOW_FLOWER, null, RED_FLOWER, null, null, null,
+			null, null, RED_FLOWER, YELLOW_FLOWER, null, null, YELLOW_FLOWER, null, RED_FLOWER, null,
+			RED_FLOWER, YELLOW_FLOWER, null, null, RED_FLOWER, YELLOW_FLOWER, null, RED_FLOWER, null, YELLOW_FLOWER,
+			null, RED_FLOWER, null, null, null, null, RED_FLOWER, null, YELLOW_FLOWER, RED_FLOWER,
+			null, YELLOW_FLOWER, null, YELLOW_FLOWER, RED_FLOWER, null, RED_FLOWER, null, RED_FLOWER, YELLOW_FLOWER,
+			null, null, RED_FLOWER, null, YELLOW_FLOWER, null, YELLOW_FLOWER, RED_FLOWER, null, null
+			);
+	}
+	
 	public static final Map trailOfFlowers() {
 		return new Map(10, 10,
 			null, null, null, null, null, null, null, null, null, null,
